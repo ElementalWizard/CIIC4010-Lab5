@@ -79,7 +79,9 @@ public class MyPanel extends JPanel {
 			}
 		}
 	}
-	public int getGridX(int x, int y) {
+
+    @SuppressWarnings("Duplicates")
+    public int getGridX(int x, int y) {
 		Insets myInsets = getInsets();
 		int x1 = myInsets.left;
 		int y1 = myInsets.top;
@@ -104,7 +106,9 @@ public class MyPanel extends JPanel {
 		}
 		return x;
 	}
-	public int getGridY(int x, int y) {
+
+	@SuppressWarnings("Duplicates")
+    public int getGridY(int x, int y) {
 		Insets myInsets = getInsets();
 		int x1 = myInsets.left;
 		int y1 = myInsets.top;
