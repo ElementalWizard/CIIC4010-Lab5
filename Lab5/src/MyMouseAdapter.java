@@ -79,7 +79,19 @@ public class MyMouseAdapter extends MouseAdapter {
                                 myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY]=Color.BLACK;
                                 myPanel.repaint();
                                 myFrame.addMouseListener(null);
+
+                                for (int X = 0; X < myPanel.TOTAL_COLUMNS; X++) {   //The rest of the grid
+                                    for (int Y = 0; Y < myPanel.TOTAL_ROWS; Y++) {
+                                        if(myPanel.bombLocations[X][Y]){
+                                            myPanel.colorArray[X][Y]=Color.BLACK;
+                                            myPanel.repaint();
+                                        }
+                                    }
+                                }
+                                myPanel.GameOver=true;
+
                             }
+
 
 
 						}

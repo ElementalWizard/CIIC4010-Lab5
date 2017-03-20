@@ -10,8 +10,8 @@ public class MyPanel extends JPanel {
 	private static final int GRID_X = 25;
 	private static final int GRID_Y = 25;
 	private static final int INNER_CELL_SIZE = 29;
-	private static final int TOTAL_COLUMNS = 9;
-	private static final int TOTAL_ROWS = 9;
+	public static final int TOTAL_COLUMNS = 9;
+	public static final int TOTAL_ROWS = 9;
 	public int x = -1;
 	public int y = -1;
 	public int mouseDownGridX = 0;
@@ -23,6 +23,8 @@ public class MyPanel extends JPanel {
     public Boolean[][] bombLocations = new Boolean[TOTAL_COLUMNS][TOTAL_ROWS];
     public static int bombAmount = ((TOTAL_COLUMNS*TOTAL_ROWS)/4);
     public int bombsOnMap = 0;
+
+    public Boolean GameOver=false;
 
 	public MyPanel() {   //This is the constructor
         randGen= new Random();
@@ -100,7 +102,16 @@ public class MyPanel extends JPanel {
 					g.fillRect(x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)) + 1, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)) + 1, INNER_CELL_SIZE, INNER_CELL_SIZE);
 			}
 		}
+
+		if(GameOver){
+		    gameOver(g);
+        }
 	}
+
+	public void gameOver(Graphics g){
+	    g.setColor(Color.RED);
+	    g.drawString("Game Over",getWidth()/2,20);
+    }
 
     @SuppressWarnings("Duplicates")
     public int getGridX(int x, int y) {
