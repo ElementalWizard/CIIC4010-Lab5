@@ -76,6 +76,9 @@ public class MyMouseAdapter extends MouseAdapter {
 
                             if(myPanel.bombLocations[myPanel.mouseDownGridX][myPanel.mouseDownGridY]){
                                 System.out.println("Boom");
+                                myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY]=Color.BLACK;
+                                myPanel.repaint();
+                                myFrame.addMouseListener(null);
                             }
 
 
