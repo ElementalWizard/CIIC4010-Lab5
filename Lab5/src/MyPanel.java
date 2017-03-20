@@ -40,21 +40,12 @@ public class MyPanel extends JPanel {
 			throw new RuntimeException("TOTAL_ROWS must be at least 3!");
 		}
 
-		for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
-			for (int y = 0; y < TOTAL_ROWS; y++) {
-                colorArray[x][y] = Color.LIGHT_GRAY;
-			}
-		}
-
-        for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
-            for (int y = 0; y < TOTAL_ROWS; y++) {
-                bombsAroundXY[x][y] = -1;
-            }
-        }
 
         for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
             for (int y = 0; y < TOTAL_ROWS; y++) {
                 bombLocations[x][y] = false;
+                bombsAroundXY[x][y] = -1;
+                colorArray[x][y] = Color.LIGHT_GRAY;
             }
         }
 
@@ -73,22 +64,15 @@ public class MyPanel extends JPanel {
                     if(bombsOnMap>bombAmount){
                         bombsOnMap=20;
                     }
+                     if(bombLocations[x][y]){                  
+                         colorArray[x][y]=Color.BLACK;         
+                         repaint();                            
+                     }                                         
                 }
             }
         }
-
-        for (int X = 0; X < TOTAL_COLUMNS; X++) {   //The rest of the grid
-            for (int Y = 0; Y < TOTAL_ROWS; Y++) {
-                if(bombLocations[X][Y]){
-                    colorArray[X][Y]=Color.BLACK;
-                    repaint();
-                }
-            }
-        }
-
-
-
 	}
+
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
@@ -125,19 +109,12 @@ public class MyPanel extends JPanel {
 					Color c = colorArray[x][y];
 					g.setColor(c);
 					g.fillRect(x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)) + 1, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)) + 1, INNER_CELL_SIZE, INNER_CELL_SIZE);
-			}
-		}
-
-        for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
-            for (int y = 0; y < TOTAL_ROWS; y++) {
-                if (bombsAroundXY[x][y] != -1) {
-
-                    g.drawString(String.valueOf(bombsAroundXY[x][y]),((x*INNER_CELL_SIZE)+(x*1)+(INNER_CELL_SIZE/2)),((y*INNER_CELL_SIZE)+(y*1)+(INNER_CELL_SIZE/2)));
-                }
-
-
-            }
-        }
+			        if (bombsAroundXY[x][y] != -1) {
+				        g.drawString(String.valueOf(bombsAroundXY[x][y]),((x*INNER_CELL_SIZE)+(x*1)+(INNER_CELL_SIZE/2)),((y*INNER_CELL_SIZE)+(y*1)+(INNER_CELL_SIZE/2)));
+				    }
+				                                                                                                                                                        	
+			}                      
+		}                          
 
 		if(GameOver){
 		    gameOver(g);
