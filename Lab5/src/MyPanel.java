@@ -56,7 +56,6 @@ public class MyPanel extends JPanel {
                         bombLocations[x][y] = true;
                         bombsOnMap++;
                         System.out.println("Bomb on " + x + "," + y);
-                        System.out.println(bombsOnMap);
                     }
                     if(bombsOnMap>bombAmount){
                         bombsOnMap=20;
