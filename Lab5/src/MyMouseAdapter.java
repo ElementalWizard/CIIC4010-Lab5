@@ -74,11 +74,14 @@ public class MyMouseAdapter extends MouseAdapter {
 							//Released the mouse button on the same cell where it was pressed
                             //and on grid
 
+                            ///////////////////////////////////////////////////////////////////////////
+                            ///////////////////////////////////////////////////////////////////////////
+                            //Bomb Touch
                             if(myPanel.bombLocations[myPanel.mouseDownGridX][myPanel.mouseDownGridY]){
                                 System.out.println("Boom");
                                 myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY]=Color.BLACK;
                                 myPanel.repaint();
-                                myFrame.addMouseListener(null);
+
 
                                 for (int X = 0; X < myPanel.TOTAL_COLUMNS; X++) {   //The rest of the grid
                                     for (int Y = 0; Y < myPanel.TOTAL_ROWS; Y++) {
@@ -89,12 +92,14 @@ public class MyMouseAdapter extends MouseAdapter {
                                     }
                                 }
                                 myPanel.GameOver=true;
-
                             }
-
-
-
-						}
+                            ///////////////////////////////////////////////////////////////////////////
+                            ///////////////////////////////////////////////////////////////////////////
+                            else{
+                                checkSurroundings(myPanel.mouseDownGridX,myPanel.mouseDownGridY,myPanel);
+                                myPanel.repaint();
+                            }
+                        }
 					}
 				}
 				myPanel.repaint();
@@ -105,4 +110,57 @@ public class MyMouseAdapter extends MouseAdapter {
 				break;
 		}
 	}
+
+    private int checkSurroundings(int mouseDownGridX, int mouseDownGridY,MyPanel myPanel) {
+
+	    if(mouseDownGridX!=0 && mouseDownGridY!=0&& mouseDownGridX != 8 && mouseDownGridY!=8){
+	        if(myPanel.bombLocations[myPanel.mouseDownGridX-1][myPanel.mouseDownGridY-1]){
+                myPanel.bombsAroundXY[myPanel.mouseDownGridX][myPanel.mouseDownGridY]=+1;
+            }else {
+                checkSurroundings(myPanel.mouseDownGridX-1,myPanel.mouseDownGridY-1,myPanel);
+
+            }if(myPanel.bombLocations[myPanel.mouseDownGridX][myPanel.mouseDownGridY-1]){
+                myPanel.bombsAroundXY[myPanel.mouseDownGridX][myPanel.mouseDownGridY]=+1;
+            }else {
+                checkSurroundings(myPanel.mouseDownGridX,myPanel.mouseDownGridY-1,myPanel);
+
+            }if(myPanel.bombLocations[myPanel.mouseDownGridX+1][myPanel.mouseDownGridY-1]){
+                myPanel.bombsAroundXY[myPanel.mouseDownGridX][myPanel.mouseDownGridY]=+1;
+            }else {
+                checkSurroundings(myPanel.mouseDownGridX+1,myPanel.mouseDownGridY-1,myPanel);
+
+            }if(myPanel.bombLocations[myPanel.mouseDownGridX-1][myPanel.mouseDownGridY]){
+                myPanel.bombsAroundXY[myPanel.mouseDownGridX][myPanel.mouseDownGridY]=+1;
+            }else {
+                checkSurroundings(myPanel.mouseDownGridX-1,myPanel.mouseDownGridY,myPanel);
+
+            }if(myPanel.bombLocations[myPanel.mouseDownGridX+1][myPanel.mouseDownGridY]){
+                myPanel.bombsAroundXY[myPanel.mouseDownGridX][myPanel.mouseDownGridY]=+1;
+            }else {
+                checkSurroundings(myPanel.mouseDownGridX+1,myPanel.mouseDownGridY,myPanel);
+
+            }if(myPanel.bombLocations[myPanel.mouseDownGridX-1][myPanel.mouseDownGridY+1]){
+                myPanel.bombsAroundXY[myPanel.mouseDownGridX][myPanel.mouseDownGridY]=+1;
+            }else {
+                checkSurroundings(myPanel.mouseDownGridX-1,myPanel.mouseDownGridY+1,myPanel);
+
+            }if(myPanel.bombLocations[myPanel.mouseDownGridX][myPanel.mouseDownGridY+1]){
+                myPanel.bombsAroundXY[myPanel.mouseDownGridX][myPanel.mouseDownGridY]=+1;
+            }else {
+                checkSurroundings(myPanel.mouseDownGridX,myPanel.mouseDownGridY+1,myPanel);
+
+            }if(myPanel.bombLocations[myPanel.mouseDownGridX+1][myPanel.mouseDownGridY+1]){
+                myPanel.bombsAroundXY[myPanel.mouseDownGridX][myPanel.mouseDownGridY]=+1;
+            }else {
+                checkSurroundings(myPanel.mouseDownGridX+1,myPanel.mouseDownGridY+1,myPanel);
+
+            }
+
+        }else{
+	        System.out.println("Border");
+        }
+        return myPanel.bombsAroundXY[myPanel.mouseDownGridX][myPanel.mouseDownGridY];
+    }
+
+
 }

@@ -11,7 +11,7 @@ public class MyPanel extends JPanel {
 	private static final int GRID_Y = 25;
 	private static final int INNER_CELL_SIZE = 29;
 	public static final int TOTAL_COLUMNS = 9;
-	public static final int TOTAL_ROWS = 9;
+	public static final int TOTAL_ROWS = 10;
 	public int x = -1;
 	public int y = -1;
 	public int mouseDownGridX = 0;
@@ -25,6 +25,8 @@ public class MyPanel extends JPanel {
     public int bombsOnMap = 0;
 
     public Boolean GameOver=false;
+
+    public int[][] bombsAroundXY = new int[TOTAL_COLUMNS][TOTAL_ROWS];
 
 	public MyPanel() {   //This is the constructor
         randGen= new Random();
@@ -43,11 +45,20 @@ public class MyPanel extends JPanel {
                 colorArray[x][y] = Color.LIGHT_GRAY;
 			}
 		}
+
+        for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
+            for (int y = 0; y < TOTAL_ROWS; y++) {
+                bombsAroundXY[x][y] = -1;
+            }
+        }
+
         for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
             for (int y = 0; y < TOTAL_ROWS; y++) {
                 bombLocations[x][y] = false;
             }
         }
+
+
 
 
 		while(bombsOnMap!=bombAmount){
@@ -62,6 +73,15 @@ public class MyPanel extends JPanel {
                     if(bombsOnMap>bombAmount){
                         bombsOnMap=20;
                     }
+                }
+            }
+        }
+
+        for (int X = 0; X < TOTAL_COLUMNS; X++) {   //The rest of the grid
+            for (int Y = 0; Y < TOTAL_ROWS; Y++) {
+                if(bombLocations[X][Y]){
+                    colorArray[X][Y]=Color.BLACK;
+                    repaint();
                 }
             }
         }
@@ -94,6 +114,11 @@ public class MyPanel extends JPanel {
 			g.drawLine(x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)), y1 + GRID_Y, x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)), y1 + GRID_Y + ((INNER_CELL_SIZE + 1) * (TOTAL_ROWS -1)));
 		}
 
+
+
+
+
+
 		//Paint cell colors
 		for (int x = 0; x < TOTAL_COLUMNS; x++) {
 			for (int y = 0; y < TOTAL_ROWS-1; y++) {
@@ -102,6 +127,17 @@ public class MyPanel extends JPanel {
 					g.fillRect(x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)) + 1, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)) + 1, INNER_CELL_SIZE, INNER_CELL_SIZE);
 			}
 		}
+
+        for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
+            for (int y = 0; y < TOTAL_ROWS; y++) {
+                if (bombsAroundXY[x][y] != -1) {
+
+                    g.drawString(String.valueOf(bombsAroundXY[x][y]),((x*INNER_CELL_SIZE)+(x*1)+(INNER_CELL_SIZE/2)),((y*INNER_CELL_SIZE)+(y*1)+(INNER_CELL_SIZE/2)));
+                }
+
+
+            }
+        }
 
 		if(GameOver){
 		    gameOver(g);
