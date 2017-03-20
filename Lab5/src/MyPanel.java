@@ -17,7 +17,15 @@ public class MyPanel extends JPanel {
 	public int mouseDownGridX = 0;
 	public int mouseDownGridY = 0;
 	public Color[][] colorArray = new Color[TOTAL_COLUMNS][TOTAL_ROWS];
+
+	Random randGen;
+
+    public Boolean[][] bombLocations = new Boolean[TOTAL_COLUMNS][TOTAL_ROWS];
+    public static int bombAmount = ((TOTAL_COLUMNS*TOTAL_ROWS)/4);
+    public int bombsOnMap = 0;
+
 	public MyPanel() {   //This is the constructor
+        randGen= new Random();
 		if (INNER_CELL_SIZE + (new Random()).nextInt(1) < 1) {	//Use of "random" to prevent unwanted Eclipse warning
 			throw new RuntimeException("INNER_CELL_SIZE must be positive!");
 		}
@@ -30,9 +38,35 @@ public class MyPanel extends JPanel {
 
 		for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
 			for (int y = 0; y < TOTAL_ROWS; y++) {
-				colorArray[x][y] = Color.LIGHT_GRAY;
+                colorArray[x][y] = Color.LIGHT_GRAY;
 			}
 		}
+        for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
+            for (int y = 0; y < TOTAL_ROWS; y++) {
+                bombLocations[x][y] = false;
+            }
+        }
+
+
+		while(bombsOnMap!=bombAmount){
+            for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
+                for (int y = 0; y < TOTAL_ROWS; y++) {
+                    int rando = randGen.nextInt(TOTAL_COLUMNS*TOTAL_ROWS)+1;
+                    if(((rando) == 7)){
+                        bombLocations[x][y] = true;
+                        bombsOnMap++;
+                        System.out.println("Bomb on " + x + "," + y);
+                        System.out.println(bombsOnMap);
+                    }
+                    if(bombsOnMap>bombAmount){
+                        bombsOnMap=20;
+                    }
+                }
+            }
+        }
+
+
+
 	}
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -122,4 +156,5 @@ public class MyPanel extends JPanel {
 		}
 		return y;
 	}
+
 }
