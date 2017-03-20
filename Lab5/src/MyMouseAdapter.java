@@ -34,13 +34,12 @@ public class MyMouseAdapter extends MouseAdapter {
 				myPanel.repaint();
 				break;
 			case 3:		//Right mouse button
-				//Do nothing
 				break;
 			default:    //Some other button (2 = Middle mouse button, etc.)
-				//Do nothing
 				break;
 		}
 	}
+
 	public void mouseReleased(MouseEvent e) {
 		switch (e.getButton()) {
 			case 1:		//Left mouse button
@@ -64,20 +63,15 @@ public class MyMouseAdapter extends MouseAdapter {
 				int gridX = myPanel.getGridX(x, y);
 				int gridY = myPanel.getGridY(x, y);
 				if ((myPanel.mouseDownGridX == -1) || (myPanel.mouseDownGridY == -1)) {
-					//Had pressed outside
-					//Do nothing
+					//Had pressed outside originally and now inside
 				} else {
 					if ((gridX == -1) || (gridY == -1)) {
-						//Is releasing outside
-						//Do nothing
+						//Is releasing outside the grid
 					} else {
 						if ((myPanel.mouseDownGridX != gridX) || (myPanel.mouseDownGridY != gridY)) {
 							//Released the mouse button on a different cell where it was pressed
-							//Do nothing
 						} else {
 							//Released the mouse button on the same cell where it was pressed
-							//On the left column and on the top row... do nothing
-							//On the grid other than on the left column and on the top row:
 							Color newColor = null;
 							switch (generator.nextInt(5)) {
 								case 0:
@@ -105,10 +99,8 @@ public class MyMouseAdapter extends MouseAdapter {
 				myPanel.repaint();
 				break;
 			case 3:		//Right mouse button
-				//Do nothing
 				break;
 			default:    //Some other button (2 = Middle mouse button, etc.)
-				//Do nothing
 				break;
 		}
 	}
