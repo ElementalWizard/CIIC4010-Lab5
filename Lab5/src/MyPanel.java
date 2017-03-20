@@ -30,7 +30,7 @@ public class MyPanel extends JPanel {
 
 		for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
 			for (int y = 0; y < TOTAL_ROWS; y++) {
-				colorArray[x][y] = Color.GRAY;
+				colorArray[x][y] = Color.LIGHT_GRAY;
 			}
 		}
 	}
@@ -47,7 +47,7 @@ public class MyPanel extends JPanel {
 		int height = y2 - y1;
 
 		//Paint the background
-		g.setColor(Color.LIGHT_GRAY);
+		g.setColor(Color.WHITE);
 		g.fillRect(x1, y1, width + 1, height + 1);
 
 		//draw the lines for visuals
