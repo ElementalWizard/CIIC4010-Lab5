@@ -10,8 +10,8 @@ public class MyPanel extends JPanel {
     private static final int GRID_X = 25;
     private static final int GRID_Y = 25;
     private static final int INNER_CELL_SIZE = 29;
-    public static final int TOTAL_COLUMNS = 15;
-    public static final int TOTAL_ROWS = 16;
+    public static final int TOTAL_COLUMNS = 9;
+    public static final int TOTAL_ROWS = 10;
     public int x = -1;
     public int y = -1;
     public int mouseDownGridX = 0;
@@ -59,7 +59,6 @@ public class MyPanel extends JPanel {
                     if(((rando) == 7 && bombLocations[x][y]!=true)){
                         bombLocations[x][y] = true;
                         bombsOnMap++;
-                        System.out.println("Bomb on " + x + "," + y);
                     }
                     if(bombsOnMap>bombAmount){
                         bombsOnMap=bombAmount;
@@ -68,6 +67,13 @@ public class MyPanel extends JPanel {
                     }
 
                 }
+            }
+        }
+        for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
+            for (int y = 0; y < TOTAL_ROWS; y++) {
+               if(bombLocations[x][y]){
+                   colorArray[x][y] = Color.BLACK;
+               }
             }
         }
     }
