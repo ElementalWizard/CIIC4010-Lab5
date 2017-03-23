@@ -23,8 +23,10 @@ public class MyPanel extends JPanel {
     public Boolean[][] bombLocations = new Boolean[TOTAL_COLUMNS][TOTAL_ROWS];
     public int bombAmount = ((TOTAL_COLUMNS*TOTAL_ROWS-1)/5);
     public int bombsOnMap = 0;
+    public int numberOfSquares;
 
     public Boolean GameOver=false;
+    public Boolean GameWon=false;
 
     public int[][] bombsAroundXY = new int[TOTAL_COLUMNS][TOTAL_ROWS];
 
@@ -50,8 +52,6 @@ public class MyPanel extends JPanel {
         }
 
 
-
-
         while(bombsOnMap<bombAmount){
             for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
                 for (int y = 0; y < TOTAL_ROWS; y++) {
@@ -69,13 +69,24 @@ public class MyPanel extends JPanel {
                 }
             }
         }
+
+        numberOfSquares = (TOTAL_COLUMNS*(TOTAL_ROWS-1))-bombAmount;
+
         for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
             for (int y = 0; y < TOTAL_ROWS; y++) {
-               if(bombLocations[x][y]){
-                   colorArray[x][y] = Color.BLACK;
-               }
+                if(bombLocations[x][y]){
+                    colorArray[x][y] = Color.BLACK;
+                }
             }
         }
+    }
+
+    public int getNumberOfSquares() {
+        return numberOfSquares;
+    }
+
+    public void setNumberOfSquares(int numberOfSquares) {
+        this.numberOfSquares = numberOfSquares;
     }
 
     public void paintComponent(Graphics g) {
@@ -105,43 +116,40 @@ public class MyPanel extends JPanel {
 
 
 
-
-
-
         //Paint cell colors
         g.setColor(Color.BLACK);
         for (int x = 0; x < TOTAL_COLUMNS; x++) {
             for (int y = 0; y < TOTAL_ROWS-1; y++) {
-                 switch(bombsAroundXY[x][y])  {
+                switch(bombsAroundXY[x][y])  {
 
-                     case 0:
-                         colorArray[x][y]=Color.WHITE;
-                         break;
-                     case 1:
-                         colorArray[x][y]=Color.YELLOW;
-                         break;
-                     case 2:
-                         colorArray[x][y]=Color.BLUE;
-                         break;
-                     case 3:
-                         colorArray[x][y]=Color.GREEN;
-                         break;
-                     case 4:
-                         colorArray[x][y]=Color.RED;
-                         break;
-                     case 5:
-                         colorArray[x][y]=Color.CYAN;
-                         break;
-                     case 6:
-                         colorArray[x][y]=Color.PINK;
-                         break;
-                     case 7:
-                         colorArray[x][y]=Color.ORANGE;
-                         break;
-                     case 8:
-                         colorArray[x][y]=Color.MAGENTA;
-                         break;
-                 }                                             
+                    case 0:
+                        colorArray[x][y]=Color.WHITE;
+                        break;
+                    case 1:
+                        colorArray[x][y]=Color.YELLOW;
+                        break;
+                    case 2:
+                        colorArray[x][y]=Color.BLUE;
+                        break;
+                    case 3:
+                        colorArray[x][y]=Color.GREEN;
+                        break;
+                    case 4:
+                        colorArray[x][y]=Color.RED;
+                        break;
+                    case 5:
+                        colorArray[x][y]=Color.CYAN;
+                        break;
+                    case 6:
+                        colorArray[x][y]=Color.PINK;
+                        break;
+                    case 7:
+                        colorArray[x][y]=Color.ORANGE;
+                        break;
+                    case 8:
+                        colorArray[x][y]=Color.MAGENTA;
+                        break;
+                }
                 Color c = colorArray[x][y];
                 g.setColor(c);
                 g.fillRect(x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)) + 1, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)) + 1, INNER_CELL_SIZE, INNER_CELL_SIZE);
@@ -154,10 +162,22 @@ public class MyPanel extends JPanel {
 
             }
         }
-
+        if (numberOfSquares==0){
+            GameWon = true;
+        }
         if(GameOver){
             gameOver(g);
         }
+
+        if(GameWon){
+            gameWon(g);
+        }
+
+    }
+
+    private void gameWon(Graphics g) {
+        g.setColor(Color.RED);
+        g.drawString("Congratulations!! YOU HAVE WON.",getWidth()/2,20);
     }
 
     public void gameOver(Graphics g){
