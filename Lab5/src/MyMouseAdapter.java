@@ -30,7 +30,7 @@ public class MyMouseAdapter extends MouseAdapter {
         myPanel.mouseDownGridX = myPanel.getGridX(x, y);
         myPanel.mouseDownGridY = myPanel.getGridY(x, y);
         myPanel.repaint();
-        if(!myPanel.GameOver) {
+        if(!myPanel.GameOver && !myPanel.GameWon) {
             switch (e.getButton()) {
                 case 1:        //Left mouse button
 
@@ -63,7 +63,7 @@ public class MyMouseAdapter extends MouseAdapter {
         myPanel.y = y;
         int gridX = myPanel.getGridX(x, y);
         int gridY = myPanel.getGridY(x, y);
-        if(!myPanel.GameOver) {
+        if(!myPanel.GameOver && !myPanel.GameWon) {
             switch (e.getButton()) {
                 case 1:        //Left mouse button
 
@@ -119,12 +119,26 @@ public class MyMouseAdapter extends MouseAdapter {
                             //Is releasing outside the grid
                         }
                         else{
-                            myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.RED;
-                            myPanel.repaint();
+                            if( myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY].equals(Color.LIGHT_GRAY)) {
+                                myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.RED;
+                                myPanel.repaint();
+                            }else if(myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY].equals(Color.RED)){
+                                myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.LIGHT_GRAY;
+                                myPanel.repaint();
+                            }
                         }
                     }
                     break;
-                default:    //Some other button (2 = Middle mouse button, etc.)
+                case 2:    //Some other button (2 = Middle mouse button, etc.)
+                    if(!myPanel.Displaying){
+                        myPanel.DisplayMines();
+                        myPanel.Displaying=true;
+
+                    }else if(myPanel.Displaying){
+                        myPanel.UnDisplayMines();
+                        myPanel.Displaying=false;
+
+                    }
                     break;
             }
         }
@@ -147,7 +161,6 @@ public class MyMouseAdapter extends MouseAdapter {
                     if(x == mouseDownGridX && y == mouseDownGridY){
                         myPanel.setNumberOfSquares(myPanel.getNumberOfSquares()-1);
                         System.out.println(myPanel.getNumberOfSquares());
-
                         continue;
                     }
                     if (myPanel.bombLocations[x][y]) {

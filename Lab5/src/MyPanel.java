@@ -18,15 +18,24 @@ public class MyPanel extends JPanel {
     public int mouseDownGridY = 0;
     public Color[][] colorArray = new Color[TOTAL_COLUMNS][TOTAL_ROWS];
 
-    Random randGen;
+    private Random randGen;
+
+
+
+
+
 
     public Boolean[][] bombLocations = new Boolean[TOTAL_COLUMNS][TOTAL_ROWS];
-    public int bombAmount = ((TOTAL_COLUMNS*TOTAL_ROWS-1)/5);
+    public int totalSquares =(TOTAL_COLUMNS*(TOTAL_ROWS-1)) ;
+    public int bombAmount = Math.round((totalSquares)/3);
+
     public int bombsOnMap = 0;
     public int numberOfSquares;
 
     public Boolean GameOver=false;
     public Boolean GameWon=false;
+    public Boolean Displaying=false;
+
 
     public int[][] bombsAroundXY = new int[TOTAL_COLUMNS][TOTAL_ROWS];
 
@@ -43,6 +52,7 @@ public class MyPanel extends JPanel {
         }
 
 
+
         for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
             for (int y = 0; y < TOTAL_ROWS; y++) {
                 bombLocations[x][y] = false;
@@ -52,33 +62,27 @@ public class MyPanel extends JPanel {
         }
 
 
-        while(bombsOnMap<bombAmount){
+        while(bombsOnMap!=bombAmount){
             for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
-                for (int y = 0; y < TOTAL_ROWS; y++) {
-                    int rando = randGen.nextInt(TOTAL_COLUMNS*TOTAL_ROWS)+1;
+                for (int y = 0; y < TOTAL_ROWS -1; y++) {
+                    int rando = randGen.nextInt(totalSquares);
                     if(((rando) == 7 && bombLocations[x][y]!=true)){
                         bombLocations[x][y] = true;
                         bombsOnMap++;
                     }
-                    if(bombsOnMap>bombAmount){
-                        bombsOnMap=bombAmount;
-                        break;
 
-                    }
 
                 }
             }
         }
+        numberOfSquares = (totalSquares)-bombAmount;
 
-        numberOfSquares = (TOTAL_COLUMNS*(TOTAL_ROWS-1))-bombAmount;
 
-        for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
-            for (int y = 0; y < TOTAL_ROWS; y++) {
-                if(bombLocations[x][y]){
-                    colorArray[x][y] = Color.BLACK;
-                }
-            }
-        }
+
+
+
+
+
     }
 
     public int getNumberOfSquares() {
@@ -155,34 +159,60 @@ public class MyPanel extends JPanel {
                 g.fillRect(x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)) + 1, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)) + 1, INNER_CELL_SIZE, INNER_CELL_SIZE);
                 g.setColor(Color.GRAY);
                 if(bombsAroundXY[x][y]!= -1)
-
                     g.drawString(String.valueOf(bombsAroundXY[x][y]),(((x+1)*INNER_CELL_SIZE)+(INNER_CELL_SIZE/2)),(((y+1)*INNER_CELL_SIZE)+(INNER_CELL_SIZE/2)+7));
-
-
-
             }
         }
+
         if (numberOfSquares==0){
             GameWon = true;
         }
         if(GameOver){
             gameOver(g);
+            DisplayMines();
         }
 
         if(GameWon){
             gameWon(g);
+            DisplayMines();
         }
 
+
+    }
+
+    public void DisplayMines(){
+        for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
+            for (int y = 0; y < TOTAL_ROWS; y++) {
+                if(bombLocations[x][y]){
+                    colorArray[x][y] = Color.BLACK;
+                }
+            }
+        }
+        repaint();
+    }
+
+    public void UnDisplayMines(){
+        for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
+            for (int y = 0; y < TOTAL_ROWS; y++) {
+                if(bombLocations[x][y]){
+                    colorArray[x][y] = Color.LIGHT_GRAY;
+                }
+            }
+        }
+        repaint();
     }
 
     private void gameWon(Graphics g) {
         g.setColor(Color.RED);
-        g.drawString("Congratulations!! YOU HAVE WON.",getWidth()/2,20);
+        String wtxt ="Congratulations!! YOU HAVE WON.";
+        int twwidth = g.getFontMetrics().stringWidth(wtxt);
+        g.drawString("Congratulations!! YOU HAVE WON.",(getWidth()/2) -(twwidth/2),20);
     }
 
     public void gameOver(Graphics g){
         g.setColor(Color.RED);
-        g.drawString("Game Over",getWidth()/2,20);
+        String ltxt ="Game Over";
+        int tlwidth = g.getFontMetrics().stringWidth(ltxt);
+        g.drawString(ltxt,(getWidth()/2-(tlwidth/2)),20);
     }
 
     @SuppressWarnings("Duplicates")
