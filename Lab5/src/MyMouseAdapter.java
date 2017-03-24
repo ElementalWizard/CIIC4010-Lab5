@@ -15,28 +15,31 @@ public class MyMouseAdapter extends MouseAdapter {
                 return;
             }
         }
+
         JFrame myFrame = (JFrame) c;
         MyPanel myPanel = (MyPanel) myFrame.getContentPane().getComponent(0);
         Insets myInsets = myFrame.getInsets();
-        int x1 = myInsets.left;
-        int y1 = myInsets.top;
-        e.translatePoint(-x1, -y1);
-        int x = e.getX();
-        int y = e.getY();
-        myPanel.x = x;
-        myPanel.y = y;
-        myPanel.mouseDownGridX = myPanel.getGridX(x, y);
-        myPanel.mouseDownGridY = myPanel.getGridY(x, y);
-        myPanel.repaint();
         if(!myPanel.GameOver && !myPanel.GameWon) {
-            switch (e.getButton()) {
-                case 1:        //Left mouse button
+            int x1 = myInsets.left;
+            int y1 = myInsets.top;
+            e.translatePoint(-x1, -y1);
+            int x = e.getX();
+            int y = e.getY();
+            myPanel.x = x;
+            myPanel.y = y;
+            myPanel.mouseDownGridX = myPanel.getGridX(x, y);
+            myPanel.mouseDownGridY = myPanel.getGridY(x, y);
+            myPanel.repaint();
+            if (!myPanel.GameOver && !myPanel.GameWon) {
+                switch (e.getButton()) {
+                    case 1:        //Left mouse button
 
-                    break;
-                case 3:        //Right mouse button
-                    break;
-                default:    //Some other button (2 = Middle mouse button, etc.)
-                    break;
+                        break;
+                    case 3:        //Right mouse button
+                        break;
+                    default:    //Some other button (2 = Middle mouse button, etc.)
+                        break;
+                }
             }
         }
     }
@@ -49,9 +52,11 @@ public class MyMouseAdapter extends MouseAdapter {
                 return;
             }
         }
+
         JFrame myFrame = (JFrame)c;
         MyPanel myPanel = (MyPanel) myFrame.getContentPane().getComponent(0);  //Can also loop among components to find MyPanel
         Insets myInsets = myFrame.getInsets();
+        if(!myPanel.GameOver && !myPanel.GameWon) {
         int x1 = myInsets.left;
         int y1 = myInsets.top;
         e.translatePoint(-x1, -y1);
@@ -61,12 +66,12 @@ public class MyMouseAdapter extends MouseAdapter {
         myPanel.y = y;
         int gridX = myPanel.getGridX(x, y);
         int gridY = myPanel.getGridY(x, y);
-        if(!myPanel.GameOver && !myPanel.GameWon) {
+
             switch (e.getButton()) {
                 case 1:        //Left mouse button
 
 
-                    if ((myPanel.mouseDownGridX != -1) && (myPanel.mouseDownGridY != -1)) {
+                    if ((myPanel.mouseDownGridX != -1) && (myPanel.mouseDownGridY != -1) && !myPanel.flagLocations[myPanel.mouseDownGridX][myPanel.mouseDownGridY]) {
                         if ((gridX != -1) && (gridY != -1)) {
                             if ((myPanel.mouseDownGridX == gridX) && (myPanel.mouseDownGridY == gridY)) {
                                 //Released the mouse button on the same cell where it was pressed
@@ -76,18 +81,6 @@ public class MyMouseAdapter extends MouseAdapter {
                                 ///////////////////////////////////////////////////////////////////////////
                                 //Bomb Touch
                                 if (myPanel.bombLocations[myPanel.mouseDownGridX][myPanel.mouseDownGridY]) {
-                                    myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.BLACK;
-                                    myPanel.repaint();
-
-
-                                    for (int X = 0; X < MyPanel.TOTAL_COLUMNS; X++) {   //The rest of the grid
-                                        for (int Y = 0; Y < MyPanel.TOTAL_ROWS; Y++) {
-                                            if (myPanel.bombLocations[X][Y]) {
-                                                myPanel.colorArray[X][Y] = Color.BLACK;
-                                                myPanel.repaint();
-                                            }
-                                        }
-                                    }
                                     myPanel.GameOver = true;
                                 }
                                 ///////////////////////////////////////////////////////////////////////////
@@ -103,28 +96,29 @@ public class MyMouseAdapter extends MouseAdapter {
                     }
                     myPanel.repaint();
                     break;
-                case 3:        //Right mouse button
-                    if ((myPanel.mouseDownGridX != -1) && (myPanel.mouseDownGridY != -1)) {
-                        if ((gridX != -1) && (gridY != -1)) {
-                            if( myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY].equals(Color.LIGHT_GRAY)) {
-                                myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.RED;
-                                myPanel.repaint();
-                            }else if(myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY].equals(Color.RED)){
-                                myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.LIGHT_GRAY;
-                                myPanel.repaint();
-                            }
+
+                case 2://Some other button (2 = Middle mouse button, etc.)
+                    if(!myPanel.GameWon && !myPanel.GameOver) {
+                        if (!myPanel.Displaying) {
+                            myPanel.Displaying = true;
+
+                        } else {
+                            myPanel.Displaying = false;
                         }
+                        myPanel.repaint();
                     }
                     break;
-                case 2:    //Some other button (2 = Middle mouse button, etc.)
-                    if(!myPanel.Displaying){
-                        myPanel.DisplayMines();
-                        myPanel.Displaying=true;
 
-                    }else {
-                        myPanel.UnDisplayMines();
-                        myPanel.Displaying=false;
-
+                case 3:        //Right mouse button
+                    if(!myPanel.GameWon && !myPanel.GameOver) {
+                        if ((myPanel.mouseDownGridX != -1) && (myPanel.mouseDownGridY != -1)) {
+                            if ((gridX != -1) && (gridY != -1)) {
+                                if (myPanel.bombsAroundXY[myPanel.mouseDownGridX][myPanel.mouseDownGridY] == -1) {
+                                    myPanel.flagLocations[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = !myPanel.flagLocations[myPanel.mouseDownGridX][myPanel.mouseDownGridY];
+                                    myPanel.repaint();
+                                }
+                            }
+                        }
                     }
                     break;
             }

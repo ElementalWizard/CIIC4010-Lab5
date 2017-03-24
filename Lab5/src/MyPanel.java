@@ -23,10 +23,13 @@ public class MyPanel extends JPanel {
 
 
     Boolean[][] bombLocations = new Boolean[TOTAL_COLUMNS][TOTAL_ROWS];
+    Boolean[][] flagLocations = new Boolean[TOTAL_COLUMNS][TOTAL_ROWS];
 
-    private BufferedImage[] Images = new BufferedImage[11];
+
+    public BufferedImage[] Images = new BufferedImage[11];
 
     private int numberOfSquares;
+    private int timeLooped =0;
 
     Boolean GameOver=false;
     Boolean GameWon=false;
@@ -67,6 +70,7 @@ public class MyPanel extends JPanel {
         for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
             for (int y = 0; y < TOTAL_ROWS; y++) {
                 bombLocations[x][y] = false;
+                flagLocations[x][y] = false;
                 bombsAroundXY[x][y] = -1;
                 colorArray[x][y] = Color.LIGHT_GRAY;
             }
@@ -74,17 +78,18 @@ public class MyPanel extends JPanel {
 
 
         int totalSquares = (TOTAL_COLUMNS * (TOTAL_ROWS - 1));
-        int bombAmount = Math.round((totalSquares) / 5);
+        int bombAmount = Math.round((totalSquares) / 4);
         int bombsOnMap = 0;
-        while(bombsOnMap != bombAmount){
+        while((bombsOnMap != bombAmount) && (timeLooped<=25)){
             for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
                 for (int y = 0; y < TOTAL_ROWS -1; y++) {
                     int rando = randGen.nextInt(totalSquares);
                     if(((rando) == 7 && !bombLocations[x][y])){
                         bombLocations[x][y] = true;
                         bombsOnMap++;
+                        timeLooped++;
                     }
-
+                    System.out.println(timeLooped);
 
                 }
             }
@@ -135,79 +140,92 @@ public class MyPanel extends JPanel {
 
 
         //Paint cell colors
-        g.setColor(Color.BLACK);
         for (int x = 0; x < TOTAL_COLUMNS; x++) {
             for (int y = 0; y < TOTAL_ROWS-1; y++) {
-                Color sc = Color.GRAY;
+                BufferedImage image = null;
                 Color c = colorArray[x][y];
                 switch(bombsAroundXY[x][y])  {
                     case 0:
                         c=new Color(217,212,220);
-                        sc=new Color(191,0,0);
+                        image=Images[0];
                         break;
                     case 1:
                         c=new Color(217,212,220);
-                        sc=new Color(0,139,0);
+                        image=Images[1];
                         break;
                     case 2:
                         c=new Color(217,212,220);
-                        sc=new Color(0,0,141);
+                        image=Images[2];
                         break;
                     case 3:
                         c=new Color(217,212,220);
-                        sc=new Color(165,88,0);
+                        image=Images[3];
                         break;
                     case 4:
                         c=new Color(217,212,220);
-                        sc=new Color(165,0,108);
+                        image=Images[4];
                         break;
                     case 5:
                         c=new Color(217,212,220);
-                        sc=new Color(255,255,36);
+                        image=Images[5];
                         break;
                     case 6:
                         c=new Color(217,212,220);
-                        sc=new Color(149,12,232);
+                        image=Images[6];
                         break;
                     case 7:
                         c=new Color(217,212,220);
-                        sc=new Color(138,225,225);
+                        image=Images[7];
                         break;
                     case 8:
                         c=new Color(217,212,220);
-                        sc=new Color(0,0,0);
+                        image=Images[8];
                         break;
                 }
-
                 g.setColor(c);
                 g.fillRect(x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)) + 1, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)) + 1, INNER_CELL_SIZE, INNER_CELL_SIZE);
-                g.setColor(sc);
-                if(bombsAroundXY[x][y]!= -1)
-                    g.drawString(String.valueOf(bombsAroundXY[x][y]),(((x+1)*INNER_CELL_SIZE)+(INNER_CELL_SIZE/2)),(((y+1)*INNER_CELL_SIZE)+(INNER_CELL_SIZE/2)+7));
+                if(bombsAroundXY[x][y]!= -1) {
+                    g.drawImage(image, x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)) + 1, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)) + 1, 29, 29, null);
+                }
+                if(flagLocations[x][y]){
+                    g.drawImage(Images[10],x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)) + 1,y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)) + 1,29,29,null);
+
+                }
+
             }
+        }
+
+        if(Displaying){
+            DisplayMines(g);
+        }else if(!Displaying){
+            UnDisplayMines();
         }
 
         if (numberOfSquares==0){
             GameWon = true;
         }
         if(GameOver){
+            colorArray[mouseDownGridX][mouseDownGridY] = Color.RED;
             gameOver(g);
-            DisplayMines();
+            DisplayMines(g);
         }
 
         if(GameWon){
             gameWon(g);
-            DisplayMines();
+            DisplayMines(g);
         }
 
 
     }
 
-    void DisplayMines(){
+    void DisplayMines(Graphics g){
         for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
             for (int y = 0; y < TOTAL_ROWS; y++) {
                 if(bombLocations[x][y]){
-                    colorArray[x][y] = Color.BLACK;
+                    Insets myInsets = getInsets();
+                    int x1 = myInsets.left;
+                    int y1 = myInsets.top;
+                    g.drawImage(Images[9],x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)) + 1,y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)) + 1,29,29,null);
                 }
             }
         }
@@ -219,6 +237,9 @@ public class MyPanel extends JPanel {
             for (int y = 0; y < TOTAL_ROWS; y++) {
                 if(bombLocations[x][y]){
                     colorArray[x][y] = Color.LIGHT_GRAY;
+                    if(bombsAroundXY[x][y] >= 0){
+                        colorArray[x][y] =new Color(217,212,220);
+                    }
                 }
             }
         }
