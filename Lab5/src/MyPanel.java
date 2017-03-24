@@ -1,8 +1,11 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Insets;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 public class MyPanel extends JPanel {
@@ -20,6 +23,8 @@ public class MyPanel extends JPanel {
 
 
     Boolean[][] bombLocations = new Boolean[TOTAL_COLUMNS][TOTAL_ROWS];
+
+    private BufferedImage[] Images = new BufferedImage[11];
 
     private int numberOfSquares;
 
@@ -42,6 +47,21 @@ public class MyPanel extends JPanel {
             throw new RuntimeException("TOTAL_ROWS must be at least 3!");
         }
 
+        try {
+            Images[0]= ImageIO.read(getClass().getResourceAsStream("0.png"));
+            Images[1]= ImageIO.read(getClass().getResourceAsStream("1.png"));
+            Images[2]= ImageIO.read(getClass().getResourceAsStream("2.png"));
+            Images[3]= ImageIO.read(getClass().getResourceAsStream("3.png"));
+            Images[4]= ImageIO.read(getClass().getResourceAsStream("4.png"));
+            Images[5]= ImageIO.read(getClass().getResourceAsStream("5.png"));
+            Images[6]= ImageIO.read(getClass().getResourceAsStream("6.png"));
+            Images[7]= ImageIO.read(getClass().getResourceAsStream("7.png"));
+            Images[8]= ImageIO.read(getClass().getResourceAsStream("8.png"));
+            Images[9]= ImageIO.read(getClass().getResourceAsStream("bomb.png"));
+            Images[10]= ImageIO.read(getClass().getResourceAsStream("flag-red.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
         for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The rest of the grid

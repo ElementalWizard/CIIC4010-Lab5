@@ -147,7 +147,6 @@ public class MyMouseAdapter extends MouseAdapter {
                     }
                     if(x == mouseDownGridX && y == mouseDownGridY){
                         myPanel.setNumberOfSquares(myPanel.getNumberOfSquares()-1);
-                        System.out.println(myPanel.getNumberOfSquares());
                         continue;
                     }
                     if (myPanel.bombLocations[x][y]) {
