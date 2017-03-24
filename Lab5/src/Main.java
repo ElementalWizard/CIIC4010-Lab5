@@ -1,9 +1,9 @@
-import javax.swing.JFrame;
+import javax.swing.*;
 
 public class Main {
 	public static void main(String[] args) {
 		JFrame myFrame = new JFrame("Color Grid");
-		myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		myFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		myFrame.setSize(((30*9)+1)+68, ((30*9)+1)+85);
 		myFrame.setLocationRelativeTo(null);

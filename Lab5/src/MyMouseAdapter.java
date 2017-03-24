@@ -3,12 +3,10 @@ import java.awt.Component;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Random;
 
 import javax.swing.JFrame;
 
 public class MyMouseAdapter extends MouseAdapter {
-    private Random generator = new Random();
     public void mousePressed(MouseEvent e) {
         Component c = e.getComponent();
         while (!(c instanceof JFrame)) {
@@ -68,15 +66,9 @@ public class MyMouseAdapter extends MouseAdapter {
                 case 1:        //Left mouse button
 
 
-                    if ((myPanel.mouseDownGridX == -1) || (myPanel.mouseDownGridY == -1)) {
-                        //Had pressed outside originally and now inside
-                    } else {
-                        if ((gridX == -1) || (gridY == -1)) {
-                            //Is releasing outside the grid
-                        } else {
-                            if ((myPanel.mouseDownGridX != gridX) || (myPanel.mouseDownGridY != gridY)) {
-                                //Released the mouse button on a different cell where it was pressed
-                            } else {
+                    if ((myPanel.mouseDownGridX != -1) && (myPanel.mouseDownGridY != -1)) {
+                        if ((gridX != -1) && (gridY != -1)) {
+                            if ((myPanel.mouseDownGridX == gridX) && (myPanel.mouseDownGridY == gridY)) {
                                 //Released the mouse button on the same cell where it was pressed
                                 //and on grid
 
@@ -88,8 +80,8 @@ public class MyMouseAdapter extends MouseAdapter {
                                     myPanel.repaint();
 
 
-                                    for (int X = 0; X < myPanel.TOTAL_COLUMNS; X++) {   //The rest of the grid
-                                        for (int Y = 0; Y < myPanel.TOTAL_ROWS; Y++) {
+                                    for (int X = 0; X < MyPanel.TOTAL_COLUMNS; X++) {   //The rest of the grid
+                                        for (int Y = 0; Y < MyPanel.TOTAL_ROWS; Y++) {
                                             if (myPanel.bombLocations[X][Y]) {
                                                 myPanel.colorArray[X][Y] = Color.BLACK;
                                                 myPanel.repaint();
@@ -112,13 +104,8 @@ public class MyMouseAdapter extends MouseAdapter {
                     myPanel.repaint();
                     break;
                 case 3:        //Right mouse button
-                    if ((myPanel.mouseDownGridX == -1) || (myPanel.mouseDownGridY == -1)) {
-                        //Had pressed outside originally and now inside
-                    } else {
-                        if ((gridX == -1) || (gridY == -1)) {
-                            //Is releasing outside the grid
-                        }
-                        else{
+                    if ((myPanel.mouseDownGridX != -1) && (myPanel.mouseDownGridY != -1)) {
+                        if ((gridX != -1) && (gridY != -1)) {
                             if( myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY].equals(Color.LIGHT_GRAY)) {
                                 myPanel.colorArray[myPanel.mouseDownGridX][myPanel.mouseDownGridY] = Color.RED;
                                 myPanel.repaint();
@@ -134,7 +121,7 @@ public class MyMouseAdapter extends MouseAdapter {
                         myPanel.DisplayMines();
                         myPanel.Displaying=true;
 
-                    }else if(myPanel.Displaying){
+                    }else {
                         myPanel.UnDisplayMines();
                         myPanel.Displaying=false;
 
@@ -151,11 +138,11 @@ public class MyMouseAdapter extends MouseAdapter {
             myPanel.bombsAroundXY[mouseDownGridX][mouseDownGridY]=0;
 
             for (int x = mouseDownGridX - 1; x <= mouseDownGridX + 1; x++) {
-                if((x<0 ||x>myPanel.TOTAL_COLUMNS-1)){
+                if((x<0 ||x> MyPanel.TOTAL_COLUMNS -1)){
                     continue;
                 }
                 for (int y = mouseDownGridY - 1; y <= mouseDownGridY + 1; y++) {
-                    if((y<0 || y>myPanel.TOTAL_ROWS-2)){
+                    if((y<0 || y> MyPanel.TOTAL_ROWS -2)){
                         continue;
                     }
                     if(x == mouseDownGridX && y == mouseDownGridY){
@@ -171,11 +158,11 @@ public class MyMouseAdapter extends MouseAdapter {
             }
             if(myPanel.bombsAroundXY[mouseDownGridX][mouseDownGridY]==0){
                 for (int x = mouseDownGridX - 1; x <= mouseDownGridX + 1; x++) {
-                    if ((x < 0 || x > myPanel.TOTAL_COLUMNS - 1)) {
+                    if ((x < 0 || x > MyPanel.TOTAL_COLUMNS - 1)) {
                         continue;
                     }
                     for (int y = mouseDownGridY - 1; y <= mouseDownGridY + 1; y++) {
-                        if ((y < 0 || y > myPanel.TOTAL_ROWS - 2)) {
+                        if ((y < 0 || y > MyPanel.TOTAL_ROWS - 2)) {
                             continue;
                         }
                         checkSurroundings(x,y,myPanel);

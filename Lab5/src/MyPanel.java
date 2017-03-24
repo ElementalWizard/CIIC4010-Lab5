@@ -10,37 +10,28 @@ public class MyPanel extends JPanel {
     private static final int GRID_X = 25;
     private static final int GRID_Y = 25;
     private static final int INNER_CELL_SIZE = 29;
-    public static final int TOTAL_COLUMNS = 9;
-    public static final int TOTAL_ROWS = 10;
-    public int x = -1;
-    public int y = -1;
-    public int mouseDownGridX = 0;
-    public int mouseDownGridY = 0;
-    public Color[][] colorArray = new Color[TOTAL_COLUMNS][TOTAL_ROWS];
-
-    private Random randGen;
+    static final int TOTAL_COLUMNS = 9;
+    static final int TOTAL_ROWS = 10;
+    int x = -1;
+    int y = -1;
+    int mouseDownGridX = 0;
+    int mouseDownGridY = 0;
+    Color[][] colorArray = new Color[TOTAL_COLUMNS][TOTAL_ROWS];
 
 
+    Boolean[][] bombLocations = new Boolean[TOTAL_COLUMNS][TOTAL_ROWS];
+
+    private int numberOfSquares;
+
+    Boolean GameOver=false;
+    Boolean GameWon=false;
+    Boolean Displaying=false;
 
 
+    int[][] bombsAroundXY = new int[TOTAL_COLUMNS][TOTAL_ROWS];
 
-
-    public Boolean[][] bombLocations = new Boolean[TOTAL_COLUMNS][TOTAL_ROWS];
-    public int totalSquares =(TOTAL_COLUMNS*(TOTAL_ROWS-1)) ;
-    public int bombAmount = Math.round((totalSquares)/5);
-
-    public int bombsOnMap = 0;
-    public int numberOfSquares;
-
-    public Boolean GameOver=false;
-    public Boolean GameWon=false;
-    public Boolean Displaying=false;
-
-
-    public int[][] bombsAroundXY = new int[TOTAL_COLUMNS][TOTAL_ROWS];
-
-    public MyPanel() {   //This is the constructor
-        randGen= new Random();
+    MyPanel() {   //This is the constructor
+        Random randGen = new Random();
         if (INNER_CELL_SIZE + (new Random()).nextInt(1) < 1) {	//Use of "random" to prevent unwanted Eclipse warning
             throw new RuntimeException("INNER_CELL_SIZE must be positive!");
         }
@@ -62,11 +53,14 @@ public class MyPanel extends JPanel {
         }
 
 
-        while(bombsOnMap!=bombAmount){
+        int totalSquares = (TOTAL_COLUMNS * (TOTAL_ROWS - 1));
+        int bombAmount = Math.round((totalSquares) / 5);
+        int bombsOnMap = 0;
+        while(bombsOnMap != bombAmount){
             for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
                 for (int y = 0; y < TOTAL_ROWS -1; y++) {
                     int rando = randGen.nextInt(totalSquares);
-                    if(((rando) == 7 && bombLocations[x][y]!=true)){
+                    if(((rando) == 7 && !bombLocations[x][y])){
                         bombLocations[x][y] = true;
                         bombsOnMap++;
                     }
@@ -75,7 +69,7 @@ public class MyPanel extends JPanel {
                 }
             }
         }
-        numberOfSquares = (totalSquares)-bombAmount;
+        numberOfSquares = (totalSquares)- bombAmount;
 
 
 
@@ -85,11 +79,11 @@ public class MyPanel extends JPanel {
 
     }
 
-    public int getNumberOfSquares() {
+    int getNumberOfSquares() {
         return numberOfSquares;
     }
 
-    public void setNumberOfSquares(int numberOfSquares) {
+    void setNumberOfSquares(int numberOfSquares) {
         this.numberOfSquares = numberOfSquares;
     }
 
@@ -189,7 +183,7 @@ public class MyPanel extends JPanel {
 
     }
 
-    public void DisplayMines(){
+    void DisplayMines(){
         for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
             for (int y = 0; y < TOTAL_ROWS; y++) {
                 if(bombLocations[x][y]){
@@ -200,7 +194,7 @@ public class MyPanel extends JPanel {
         repaint();
     }
 
-    public void UnDisplayMines(){
+    void UnDisplayMines(){
         for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
             for (int y = 0; y < TOTAL_ROWS; y++) {
                 if(bombLocations[x][y]){
@@ -218,7 +212,7 @@ public class MyPanel extends JPanel {
         g.drawString("Congratulations!! YOU HAVE WON.",(getWidth()/2) -(twwidth/2),20);
     }
 
-    public void gameOver(Graphics g){
+    private void gameOver(Graphics g){
         g.setColor(Color.RED);
         String ltxt ="Game Over";
         int tlwidth = g.getFontMetrics().stringWidth(ltxt);
@@ -226,7 +220,7 @@ public class MyPanel extends JPanel {
     }
 
     @SuppressWarnings("Duplicates")
-    public int getGridX(int x, int y) {
+    int getGridX(int x, int y) {
         Insets myInsets = getInsets();
         int x1 = myInsets.left;
         int y1 = myInsets.top;
@@ -253,7 +247,7 @@ public class MyPanel extends JPanel {
     }
 
     @SuppressWarnings("Duplicates")
-    public int getGridY(int x, int y) {
+    int getGridY(int x, int y) {
         Insets myInsets = getInsets();
         int x1 = myInsets.left;
         int y1 = myInsets.top;
