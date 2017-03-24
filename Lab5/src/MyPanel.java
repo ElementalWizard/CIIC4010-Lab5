@@ -27,7 +27,7 @@ public class MyPanel extends JPanel {
 
     public Boolean[][] bombLocations = new Boolean[TOTAL_COLUMNS][TOTAL_ROWS];
     public int totalSquares =(TOTAL_COLUMNS*(TOTAL_ROWS-1)) ;
-    public int bombAmount = Math.round((totalSquares)/3);
+    public int bombAmount = Math.round((totalSquares)/5);
 
     public int bombsOnMap = 0;
     public int numberOfSquares;
@@ -106,7 +106,7 @@ public class MyPanel extends JPanel {
         int height = y2 - y1;
 
         //Paint the background
-        g.setColor(Color.WHITE);
+        g.setColor(Color.DARK_GRAY);
         g.fillRect(x1, y1, width + 1, height + 1);
 
         //draw the lines for visuals
