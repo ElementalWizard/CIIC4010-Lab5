@@ -106,7 +106,7 @@ public class MyPanel extends JPanel {
         int height = y2 - y1;
 
         //Paint the background
-        g.setColor(Color.DARK_GRAY);
+        g.setColor(new Color(110,110,110));
         g.fillRect(x1, y1, width + 1, height + 1);
 
         //draw the lines for visuals
@@ -124,40 +124,50 @@ public class MyPanel extends JPanel {
         g.setColor(Color.BLACK);
         for (int x = 0; x < TOTAL_COLUMNS; x++) {
             for (int y = 0; y < TOTAL_ROWS-1; y++) {
+                Color sc = Color.GRAY;
+                Color c = colorArray[x][y];
                 switch(bombsAroundXY[x][y])  {
-
                     case 0:
-                        colorArray[x][y]=Color.WHITE;
+                        c=new Color(217,212,220);
+                        sc=new Color(191,0,0);
                         break;
                     case 1:
-                        colorArray[x][y]=Color.YELLOW;
+                        c=new Color(217,212,220);
+                        sc=new Color(0,139,0);
                         break;
                     case 2:
-                        colorArray[x][y]=Color.BLUE;
+                        c=new Color(217,212,220);
+                        sc=new Color(0,0,141);
                         break;
                     case 3:
-                        colorArray[x][y]=Color.GREEN;
+                        c=new Color(217,212,220);
+                        sc=new Color(165,88,0);
                         break;
                     case 4:
-                        colorArray[x][y]=Color.RED;
+                        c=new Color(217,212,220);
+                        sc=new Color(165,0,108);
                         break;
                     case 5:
-                        colorArray[x][y]=Color.CYAN;
+                        c=new Color(217,212,220);
+                        sc=new Color(255,255,36);
                         break;
                     case 6:
-                        colorArray[x][y]=Color.PINK;
+                        c=new Color(217,212,220);
+                        sc=new Color(149,12,232);
                         break;
                     case 7:
-                        colorArray[x][y]=Color.ORANGE;
+                        c=new Color(217,212,220);
+                        sc=new Color(138,225,225);
                         break;
                     case 8:
-                        colorArray[x][y]=Color.MAGENTA;
+                        c=new Color(217,212,220);
+                        sc=new Color(0,0,0);
                         break;
                 }
-                Color c = colorArray[x][y];
+
                 g.setColor(c);
                 g.fillRect(x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)) + 1, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)) + 1, INNER_CELL_SIZE, INNER_CELL_SIZE);
-                g.setColor(Color.GRAY);
+                g.setColor(sc);
                 if(bombsAroundXY[x][y]!= -1)
                     g.drawString(String.valueOf(bombsAroundXY[x][y]),(((x+1)*INNER_CELL_SIZE)+(INNER_CELL_SIZE/2)),(((y+1)*INNER_CELL_SIZE)+(INNER_CELL_SIZE/2)+7));
             }
