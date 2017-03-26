@@ -78,7 +78,7 @@ public class MyPanel extends JPanel {
 
 
         int totalSquares = (TOTAL_COLUMNS * (TOTAL_ROWS - 1));
-        int bombAmount = Math.round((totalSquares) / 4);
+        int bombAmount = Math.round((totalSquares) / 5);
         int bombsOnMap = 0;
         while((bombsOnMap != bombAmount) && (timeLooped<=25)){
             for (int x = 0; x < TOTAL_COLUMNS; x++) {   //The rest of the grid
