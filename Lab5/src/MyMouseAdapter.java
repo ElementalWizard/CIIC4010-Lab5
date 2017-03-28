@@ -99,12 +99,7 @@ public class MyMouseAdapter extends MouseAdapter {
 
                 case 2://Some other button (2 = Middle mouse button, etc.)
                     if(!myPanel.GameWon && !myPanel.GameOver) {
-                        if (!myPanel.Displaying) {
-                            myPanel.Displaying = true;
-
-                        } else {
-                            myPanel.Displaying = false;
-                        }
+                        myPanel.Displaying = !myPanel.Displaying;
                         myPanel.repaint();
                     }
                     break;

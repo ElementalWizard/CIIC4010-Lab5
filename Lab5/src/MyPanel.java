@@ -89,7 +89,6 @@ public class MyPanel extends JPanel {
                         bombsOnMap++;
                         timeLooped++;
                     }
-                    System.out.println(timeLooped);
 
                 }
             }
@@ -184,7 +183,7 @@ public class MyPanel extends JPanel {
                 }
                 g.setColor(c);
                 g.fillRect(x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)) + 1, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)) + 1, INNER_CELL_SIZE, INNER_CELL_SIZE);
-                if(bombsAroundXY[x][y]!= -1) {
+                if(bombsAroundXY[x][y]>0) {
                     g.drawImage(image, x1 + GRID_X + (x * (INNER_CELL_SIZE + 1)) + 1, y1 + GRID_Y + (y * (INNER_CELL_SIZE + 1)) + 1, 29, 29, null);
                 }
                 if(flagLocations[x][y]){
